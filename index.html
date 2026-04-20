@@ -1,37 +1,534 @@
-NOMADA · OWNER RELATIONS
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nomada — Owner Relations</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=DM+Mono:wght@400;500&display=swap');
+  :root {
+    --bg:#F4F1EC;--surface:#FFFFFF;--surface2:#FAFAF8;--border:#E2DDD6;
+    --text:#1A1814;--text-muted:#7A756C;--text-light:#B0AA9F;
+    --accent:#C4592A;--accent-light:#FAE8E0;
+    --alta:#C4592A;--alta-bg:#FAE8E0;
+    --media:#C49A2A;--media-bg:#FBF3DC;
+    --baja:#3A8A5C;--baja-bg:#E0F2E9;
+    --blue:#2A6AC4;--blue-bg:#E0ECFA;
+    --shadow:0 1px 3px rgba(0,0,0,0.06),0 4px 16px rgba(0,0,0,0.04);
+    --radius:12px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:14px;line-height:1.5;}
+  header{background:var(--text);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+  .logo{font-size:12px;font-weight:500;color:#F4F1EC;letter-spacing:.12em;text-transform:uppercase;}
+  .logo span{color:var(--accent);}
+  .hdate{font-size:11px;color:#7A756C;font-family:'DM Mono',monospace;}
+  .tabs{display:flex;background:var(--text);padding:0 24px;border-top:1px solid #2a2820;overflow-x:auto;}
+  .tab{font-size:12px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;padding:10px 18px;cursor:pointer;color:#7A756C;border-bottom:2px solid transparent;transition:all .15s;white-space:nowrap;}
+  .tab:hover{color:#F4F1EC;}
+  .tab.active{color:var(--accent);border-bottom-color:var(--accent);}
+  .container{max-width:1200px;margin:0 auto;padding:24px 20px 60px;}
+  .page{display:none;}.page.active{display:block;}
+  .summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(125px,1fr));gap:10px;margin-bottom:22px;}
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:13px 15px;cursor:pointer;transition:all .15s;position:relative;overflow:hidden;}
+  .card:hover{transform:translateY(-1px);box-shadow:var(--shadow);}
+  .card.active{border-color:var(--accent);background:var(--accent-light);}
+  .card.active::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:var(--accent);}
+  .clabel{font-size:10px;font-weight:500;letter-spacing:.07em;text-transform:uppercase;color:var(--text-muted);margin-bottom:5px;}
+  .cnum{font-size:26px;font-weight:300;line-height:1;}.csub{font-size:10px;color:var(--text-light);margin-top:2px;}
+  .card.alta .cnum{color:var(--alta);}.card.media .cnum{color:var(--media);}.card.baja .cnum{color:var(--baja);}
+  .alert{background:var(--alta-bg);border:1px solid #F0C4B0;border-radius:var(--radius);padding:10px 14px;margin-bottom:16px;font-size:12px;color:var(--alta);font-weight:500;display:none;align-items:center;gap:8px;}
+  .alert.show{display:flex;}
+  .adot{width:7px;height:7px;background:var(--alta);border-radius:50%;flex-shrink:0;animation:pulse 1.5s infinite;}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+  .toolbar{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;align-items:center;}
+  .tleft{display:flex;gap:8px;flex:1;flex-wrap:wrap;}
+  select,input[type=text],input[type=date],input[type=number]{font-family:'DM Sans',sans-serif;font-size:13px;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:7px 11px;color:var(--text);outline:none;transition:border-color .15s;}
+  select:focus,input:focus{border-color:var(--accent);}
+  input[type=text]{min-width:160px;flex:1;}
+  .btn{font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;padding:7px 15px;border-radius:8px;cursor:pointer;transition:all .15s;display:inline-flex;align-items:center;gap:5px;white-space:nowrap;}
+  .btn-p{background:var(--accent);color:white;border:none;}.btn-p:hover{opacity:.88;}
+  .btn-s{background:transparent;color:var(--text-muted);border:1px solid var(--border);}.btn-s:hover{background:var(--surface2);color:var(--text);}
+  .bsm{font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;padding:3px 8px;border-radius:6px;border:1px solid var(--border);background:transparent;color:var(--text-muted);cursor:pointer;transition:all .1s;white-space:nowrap;}
+  .bsm:hover{background:var(--surface2);color:var(--text);}
+  .bsm.res{border-color:var(--baja);color:var(--baja);}.bsm.res:hover{background:var(--baja-bg);}
+  .tw{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);}
+  table{width:100%;border-collapse:collapse;}
+  thead th{background:var(--text);color:#F4F1EC;font-size:10px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;padding:10px 12px;text-align:left;white-space:nowrap;}
+  tbody tr{border-bottom:1px solid var(--border);transition:background .1s;}
+  tbody tr:last-child{border-bottom:none;}
+  tbody tr:hover{background:var(--surface2);}
+  tbody tr.dim{opacity:.4;}
+  td{padding:10px 12px;font-size:13px;vertical-align:top;}
+  td.desc{max-width:220px;color:var(--text-muted);line-height:1.4;font-size:12px;}
+  td.mono{font-family:'DM Mono',monospace;font-size:12px;}
+  .ov{color:var(--alta);font-weight:500;}.wa{color:var(--media);}.ok{color:var(--baja);}
+  .badge{display:inline-block;font-size:10px;font-weight:500;padding:2px 7px;border-radius:20px;white-space:nowrap;}
+  .b-alta{background:var(--alta-bg);color:var(--alta);}
+  .b-media{background:var(--media-bg);color:var(--media);}
+  .b-baja{background:var(--baja-bg);color:var(--baja);}
+  .b-pend{background:var(--alta-bg);color:var(--alta);}
+  .b-gest{background:var(--blue-bg);color:var(--blue);}
+  .b-res{background:#F0EDE8;color:var(--text-muted);}
+  .b-exp{background:#FAE8E0;color:#8B3A1A;}
+  .b-credit{background:var(--baja-bg);color:#1A5C3A;}
+  .b-ptecar{background:var(--media-bg);color:#8B6A1A;}
+  .b-carg{background:var(--blue-bg);color:var(--blue);}
+  .b-verif{background:var(--baja-bg);color:var(--baja);}
+  .acts{display:flex;gap:4px;flex-wrap:wrap;}
+  .empty{text-align:center;padding:40px 24px;color:var(--text-light);}
+  .empty-i{font-size:26px;margin-bottom:8px;}
+  .clabel2{font-size:11px;color:var(--text-muted);margin-bottom:8px;font-family:'DM Mono',monospace;}
+  .mbg{display:none;position:fixed;inset:0;background:rgba(26,24,20,.5);z-index:200;align-items:center;justify-content:center;padding:16px;}
+  .mbg.show{display:flex;}
+  .modal{background:var(--surface);border-radius:16px;padding:22px;width:100%;max-width:500px;max-height:92vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.2);}
+  .modal h2{font-size:15px;font-weight:600;margin-bottom:16px;}
+  .fg{margin-bottom:11px;}
+  .fg label{display:block;font-size:10px;font-weight:500;letter-spacing:.07em;text-transform:uppercase;color:var(--text-muted);margin-bottom:4px;}
+  .fg input,.fg select,.fg textarea{width:100%;font-family:'DM Sans',sans-serif;font-size:13px;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:7px 10px;color:var(--text);outline:none;transition:border-color .15s;}
+  .fg textarea{resize:vertical;min-height:68px;}
+  .fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--accent);background:white;}
+  .frow{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
+  .macts{display:flex;gap:7px;margin-top:16px;justify-content:flex-end;}
+  /* Unit view */
+  .usearch{width:100%;font-size:14px;padding:10px 14px;border-radius:10px;background:var(--surface);border:1px solid var(--border);margin-bottom:18px;}
+  .ulist{display:grid;grid-template-columns:repeat(auto-fill,minmax(195px,1fr));gap:10px;}
+  .ucard{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:13px 15px;cursor:pointer;transition:all .15s;}
+  .ucard:hover{border-color:var(--accent);box-shadow:var(--shadow);transform:translateY(-1px);}
+  .unum{font-size:17px;font-weight:500;margin-bottom:1px;}
+  .ubuild{font-size:11px;color:var(--text-muted);}
+  .ubadges{display:flex;gap:3px;margin-top:7px;flex-wrap:wrap;}
+  .udetail{display:none;}.udetail.show{display:block;}
+  .backbtn{display:inline-flex;align-items:center;gap:5px;font-size:12px;color:var(--text-muted);cursor:pointer;margin-bottom:16px;padding:5px 0;}
+  .backbtn:hover{color:var(--accent);}
+  .uhdr{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px 18px;margin-bottom:16px;display:flex;align-items:flex-start;justify-content:space-between;}
+  .uhdr h2{font-size:18px;font-weight:500;}.uhdr p{font-size:12px;color:var(--text-muted);margin-top:1px;}
+  .ustats{display:flex;gap:18px;}
+  .ustat{text-align:right;}.ustat-v{font-size:18px;font-weight:300;}.ustat-l{font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.05em;}
+  .stitle{font-size:10px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted);margin-bottom:8px;margin-top:18px;padding-bottom:5px;border-bottom:1px solid var(--border);}
+  /* Statement banner */
+  .sbanner{border-radius:var(--radius);padding:13px 16px;margin-bottom:18px;display:flex;align-items:center;justify-content:space-between;gap:10px;}
+  .sbanner.warn{background:var(--media-bg);border:1px solid #E8D080;}
+  .sbanner.ok{background:var(--baja-bg);border:1px solid #A0D4B4;}
+  .sbl{display:flex;align-items:center;gap:10px;}
+  .sico{font-size:18px;}
+  .sbt{font-size:13px;font-weight:500;}
+  .sbanner.warn .sbt{color:#6B5200;}.sbanner.ok .sbt{color:#1A5C3A;}
+  .sbs{font-size:11px;margin-top:1px;}
+  .sbanner.warn .sbs{color:#8B6A1A;}.sbanner.ok .sbs{color:#3A8A5C;}
+  .apos{color:var(--baja);font-weight:500;}.aneg{color:var(--alta);font-weight:500;}
+  @media(max-width:640px){
+    .container{padding:14px 12px 60px;}
+    .summary{grid-template-columns:repeat(2,1fr);gap:7px;}
+    .tabs{padding:0 10px;}
+    .tab{padding:9px 10px;font-size:11px;}
+    table{font-size:12px;}
+    thead th,td{padding:8px 9px;}
+    td.desc{max-width:110px;}
+    .frow{grid-template-columns:1fr;}
+    .ulist{grid-template-columns:repeat(2,1fr);}
+    .ustats{gap:10px;}
+    th:nth-child(7),td:nth-child(7){display:none;}
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">NOMADA <span>·</span> Owner Relations</div>
+  <div class="hdate" id="hdate"></div>
+</header>
+<div class="tabs">
+  <div class="tab active" onclick="showPage('pendientes')">Pendientes</div>
+  <div class="tab" onclick="showPage('pagos')">Cobros y Créditos</div>
+  <div class="tab" onclick="showPage('unidades')">Mis Unidades</div>
+</div>
 
-PENDIENTES
-COBROS Y CRÉDITOS
-MIS UNIDADES
-ALTA URGENCIA
-0
-activos
-MEDIA URGENCIA
-0
-activos
-BAJA URGENCIA
-0
-activos
-SIN RESPONDER
-0
-pendientes
-EN GESTIÓN
-0
-en proceso
-VER TODOS
-0
-total
+<div class="container">
 
-Todas las categoríasIngresosPagosBookingsPunchlistAdministraciónOtro
-Todos los edificiosDistrict 225501 FirstCrosbyNatiivo72 ParkQuadro
-+ Nuevo
+<!-- PAGE 1: PENDIENTES -->
+<div id="page-pendientes" class="page active">
+  <div class="summary">
+    <div class="card alta" data-fp="urgencia" data-vp="Alta"><div class="clabel">Alta urgencia</div><div class="cnum" id="c-alta">0</div><div class="csub">activos</div></div>
+    <div class="card media" data-fp="urgencia" data-vp="Media"><div class="clabel">Media urgencia</div><div class="cnum" id="c-media">0</div><div class="csub">activos</div></div>
+    <div class="card baja" data-fp="urgencia" data-vp="Baja"><div class="clabel">Baja urgencia</div><div class="cnum" id="c-baja">0</div><div class="csub">activos</div></div>
+    <div class="card" data-fp="estado" data-vp="Pendiente"><div class="clabel">Sin responder</div><div class="cnum" id="c-pend">0</div><div class="csub">pendientes</div></div>
+    <div class="card" data-fp="estado" data-vp="En gestión"><div class="clabel">En gestión</div><div class="cnum" id="c-gest">0</div><div class="csub">en proceso</div></div>
+    <div class="card" data-fp="all" data-vp=""><div class="clabel">Ver todos</div><div class="cnum" id="c-all">0</div><div class="csub">total</div></div>
+  </div>
+  <div class="alert" id="alertEl"><div class="adot"></div><span id="alertTxt"></span></div>
+  <div class="toolbar">
+    <div class="tleft">
+      <input type="text" id="sP" placeholder="Buscar owner, unidad…">
+      <select id="fCat"><option value="">Todas las categorías</option><option>Ingresos</option><option>Pagos</option><option>Bookings</option><option>Punchlist</option><option>Administración</option><option>Otro</option></select>
+      <select id="fEdif"><option value="">Todos los edificios</option><option>District 225</option><option>501 First</option><option>Crosby</option><option>Natiivo</option><option>72 Park</option><option>Quadro</option></select>
+    </div>
+    <button class="btn btn-p" onclick="openMP()">+ Nuevo</button>
+  </div>
+  <div class="clabel2" id="cntP"></div>
+  <div class="tw"><table><thead><tr><th>#</th><th>Owner / Unidad</th><th>Categoría</th><th>Descripción</th><th>Urgencia</th><th>Estado</th><th>Días</th><th>Acciones</th></tr></thead><tbody id="tbP"></tbody></table><div class="empty" id="emP" style="display:none"><div class="empty-i">✓</div><p>Sin resultados</p></div></div>
+</div>
 
-#
-OWNER / UNIDAD
-CATEGORÍA
-DESCRIPCIÓN
-URGENCIA
-ESTADO
-DÍAS
-ACCIONES
+<!-- PAGE 2: COBROS -->
+<div id="page-pagos" class="page">
+  <div class="sbanner warn" id="sbanner">
+    <div class="sbl"><div class="sico">📋</div><div><div class="sbt" id="sbt">—</div><div class="sbs" id="sbs">—</div></div></div>
+    <button class="btn btn-s" style="font-size:12px" onclick="markAllCargado()">Marcar todos cargados</button>
+  </div>
+  <div class="summary">
+    <div class="card" data-fg="estado_pago" data-vg="Pendiente de cargar"><div class="clabel">Pte. de cargar</div><div class="cnum" id="c-pte">0</div><div class="csub">en AFR</div></div>
+    <div class="card" data-fg="estado_pago" data-vg="Cargado en AFR"><div class="clabel">Cargados</div><div class="cnum" id="c-carg">0</div><div class="csub">en AFR</div></div>
+    <div class="card" data-fg="estado_pago" data-vg="Verificado en statement"><div class="clabel">Verificados</div><div class="cnum" id="c-ver">0</div><div class="csub">en statement</div></div>
+    <div class="card" data-fg="tipo" data-vg="Expense"><div class="clabel">Expenses</div><div class="cnum" id="c-exp">0</div><div class="csub">cobros</div></div>
+    <div class="card" data-fg="tipo" data-vg="Credit"><div class="clabel">Credits</div><div class="cnum" id="c-cred">0</div><div class="csub">abonos</div></div>
+    <div class="card" data-fg="all" data-vg=""><div class="clabel">Ver todos</div><div class="cnum" id="c-gall">0</div><div class="csub">total</div></div>
+  </div>
+  <div class="toolbar">
+    <div class="tleft">
+      <input type="text" id="sG" placeholder="Buscar owner, unidad…">
+      <select id="fMes"><option value="">Todos los meses</option></select>
+      <select id="fEdifG"><option value="">Todos los edificios</option><option>District 225</option><option>501 First</option><option>Crosby</option><option>Natiivo</option><option>72 Park</option><option>Quadro</option></select>
+    </div>
+    <button class="btn btn-p" onclick="openMG()">+ Nuevo cobro/crédito</button>
+  </div>
+  <div class="clabel2" id="cntG"></div>
+  <div class="tw"><table><thead><tr><th>#</th><th>Owner / Unidad</th><th>Tipo</th><th>Categoría AFR</th><th>Descripción</th><th>Monto</th><th>Mes AFR</th><th>Estado</th><th>Acciones</th></tr></thead><tbody id="tbG"></tbody></table><div class="empty" id="emG" style="display:none"><div class="empty-i">💳</div><p>Sin cobros o créditos registrados</p></div></div>
+</div>
 
+<!-- PAGE 3: UNIDADES -->
+<div id="page-unidades" class="page">
+  <div id="uListView">
+    <input type="text" class="usearch" id="uSearch" placeholder="Buscar unidad o edificio…" oninput="renderUnits()">
+    <div class="ulist" id="uList"></div>
+  </div>
+  <div class="udetail" id="uDetail">
+    <div class="backbtn" onclick="closeUD()">← Volver</div>
+    <div class="uhdr">
+      <div><h2 id="udT"></h2><p id="udS"></p></div>
+      <div class="ustats">
+        <div class="ustat"><div class="ustat-v" id="udPC">0</div><div class="ustat-l">Pendientes</div></div>
+        <div class="ustat"><div class="ustat-v" id="udGC">0</div><div class="ustat-l">Cobros/Créd.</div></div>
+      </div>
+    </div>
+    <div class="stitle">Conversaciones y pendientes</div>
+    <div class="tw" id="udPT"></div>
+    <div class="stitle" style="margin-top:20px">Cobros y créditos</div>
+    <div class="tw" id="udGT"></div>
+  </div>
+</div>
+
+</div><!-- /container -->
+
+<!-- MODAL PENDIENTE -->
+<div class="mbg" id="mP">
+  <div class="modal">
+    <h2 id="mPT">Nuevo pendiente</h2>
+    <div class="frow"><div class="fg"><label>Owner</label><input type="text" id="mpO"></div><div class="fg"><label>Unidad</label><input type="text" id="mpU"></div></div>
+    <div class="frow"><div class="fg"><label>Edificio</label><select id="mpE"><option value="">Seleccionar</option><option>District 225</option><option>501 First</option><option>Crosby</option><option>Natiivo</option><option>72 Park</option><option>Quadro</option><option>Gale</option></select></div><div class="fg"><label>Canal</label><select id="mpC"><option value="">Seleccionar</option><option>WhatsApp</option><option>Mail</option><option>Llamada</option></select></div></div>
+    <div class="frow"><div class="fg"><label>Categoría</label><select id="mpK"><option value="">Seleccionar</option><option>Ingresos</option><option>Pagos</option><option>Bookings</option><option>Punchlist</option><option>Administración</option><option>Otro</option></select></div><div class="fg"><label>Urgencia</label><select id="mpQ"><option value="">Seleccionar</option><option>Alta</option><option>Media</option><option>Baja</option></select></div></div>
+    <div class="fg"><label>Descripción</label><textarea id="mpD" placeholder="¿Qué preguntó o qué problema tiene?"></textarea></div>
+    <div class="frow"><div class="fg"><label>Estado</label><select id="mpS" onchange="treg(this.value)"><option>Pendiente</option><option>En gestión</option><option>Resuelto</option></select></div><div class="fg"><label>Fecha límite</label><input type="date" id="mpF"></div></div>
+    <div class="fg" id="mpRG" style="display:none"><label>Registro resolución</label><textarea id="mpR" placeholder="¿Cómo se resolvió?"></textarea></div>
+    <div class="macts"><button class="btn btn-s" onclick="closeMP()">Cancelar</button><button class="btn btn-p" onclick="saveP()">Guardar</button></div>
+  </div>
+</div>
+
+<!-- MODAL RESOLVER -->
+<div class="mbg" id="mRes">
+  <div class="modal" style="max-width:420px">
+    <h2>Marcar como resuelto</h2>
+    <div class="fg"><label>Registro de resolución</label><textarea id="resR" placeholder="¿Qué se hizo? Dejá el detalle para respaldo." style="min-height:100px"></textarea></div>
+    <div class="macts"><button class="btn btn-s" onclick="closeRes()">Cancelar</button><button class="btn btn-p" onclick="confRes()">Marcar resuelto</button></div>
+  </div>
+</div>
+
+<!-- MODAL COBRO/CRÉDITO -->
+<div class="mbg" id="mG">
+  <div class="modal">
+    <h2 id="mGT">Nuevo cobro / crédito</h2>
+    <div class="frow"><div class="fg"><label>Owner</label><input type="text" id="mgO"></div><div class="fg"><label>Unidad</label><input type="text" id="mgU"></div></div>
+    <div class="frow"><div class="fg"><label>Edificio</label><select id="mgE"><option value="">Seleccionar</option><option>District 225</option><option>501 First</option><option>Crosby</option><option>Natiivo</option><option>72 Park</option><option>Quadro</option></select></div><div class="fg"><label>Tipo</label><select id="mgTipo" onchange="updCats()"><option value="">Seleccionar</option><option>Expense</option><option>Credit</option></select></div></div>
+    <div class="frow"><div class="fg"><label>Categoría AFR</label><select id="mgCat"></select></div><div class="fg" id="otraG" style="display:none"><label>Nombre categoría</label><input type="text" id="mgOtra"></div></div>
+    <div class="frow"><div class="fg"><label>Monto ($)</label><input type="number" id="mgM" placeholder="0.00" step="0.01"></div><div class="fg"><label>Mes AFR</label><select id="mgMes"><option value="01-2026">Enero 2026</option><option value="02-2026">Feb 2026</option><option value="03-2026">Mar 2026</option><option value="04-2026" selected>Abr 2026</option><option value="05-2026">May 2026</option><option value="06-2026">Jun 2026</option><option value="07-2026">Jul 2026</option><option value="08-2026">Ago 2026</option><option value="09-2026">Sep 2026</option><option value="10-2026">Oct 2026</option><option value="11-2026">Nov 2026</option><option value="12-2026">Dic 2026</option></select></div></div>
+    <div class="fg"><label>Descripción / Nota</label><textarea id="mgD" placeholder="Contexto adicional (ej: 2 de 3 cuotas, daño por huésped…)"></textarea></div>
+    <div class="fg"><label>Estado</label><select id="mgEst"><option>Pendiente de cargar</option><option>Cargado en AFR</option><option>Verificado en statement</option></select></div>
+    <div class="macts"><button class="btn btn-s" onclick="closeMG()">Cancelar</button><button class="btn btn-p" onclick="saveG()">Guardar</button></div>
+  </div>
+</div>
+
+<script>
+let PP=JSON.parse(localStorage.getItem('np2')||'[]');
+let GG=JSON.parse(localStorage.getItem('ng2')||'[]');
+let npi=parseInt(localStorage.getItem('npi2')||'1');
+let ngi=parseInt(localStorage.getItem('ngi2')||'1');
+let ePid=null,eGid=null,resId=null;
+let afP={t:'all',v:''},afG={t:'all',v:''};
+
+function sv(){localStorage.setItem('np2',JSON.stringify(PP));localStorage.setItem('ng2',JSON.stringify(GG));localStorage.setItem('npi2',String(npi));localStorage.setItem('ngi2',String(ngi));}
+function td(){return new Date().toISOString().split('T')[0];}
+function dd(d){if(!d)return null;const a=new Date(d),b=new Date();a.setHours(0,0,0,0);b.setHours(0,0,0,0);return Math.round((b-a)/86400000);}
+function fd(d){if(!d)return'—';const[y,m,dd]=d.split('-');return`${dd}/${m}/${y}`;}
+function fm(m){if(!m)return'—';const mp={'01':'Ene','02':'Feb','03':'Mar','04':'Abr','05':'May','06':'Jun','07':'Jul','08':'Ago','09':'Sep','10':'Oct','11':'Nov','12':'Dic'};const[mm,yy]=m.split('-');return`${mp[mm]||mm} ${yy}`;}
+function fv(v){if(!v)return'—';return'$'+parseFloat(v).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});}
+
+function showPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  document.querySelectorAll('.tab').forEach(t=>{if(t.getAttribute('onclick').includes(id))t.classList.add('active');});
+  if(id==='pendientes')rP();
+  if(id==='pagos')rG();
+  if(id==='unidades')renderUnits();
+}
+
+// ── PENDIENTES ──
+function gfP(){
+  let it=[...PP];
+  const s=document.getElementById('sP').value.toLowerCase();
+  const c=document.getElementById('fCat').value;
+  const e=document.getElementById('fEdif').value;
+  if(afP.t==='urgencia'&&afP.v) it=it.filter(i=>i.urgencia===afP.v&&i.estado!=='Resuelto');
+  else if(afP.t==='estado'&&afP.v) it=it.filter(i=>i.estado===afP.v);
+  if(s) it=it.filter(i=>(i.owner||'').toLowerCase().includes(s)||(i.unidad||'').toLowerCase().includes(s)||(i.desc||'').toLowerCase().includes(s));
+  if(c) it=it.filter(i=>i.categoria===c);
+  if(e) it=it.filter(i=>i.edificio===e);
+  return it;
+}
+function rP(){
+  const ac=PP.filter(i=>i.estado!=='Resuelto');
+  document.getElementById('c-alta').textContent=ac.filter(i=>i.urgencia==='Alta').length;
+  document.getElementById('c-media').textContent=ac.filter(i=>i.urgencia==='Media').length;
+  document.getElementById('c-baja').textContent=ac.filter(i=>i.urgencia==='Baja').length;
+  document.getElementById('c-pend').textContent=PP.filter(i=>i.estado==='Pendiente').length;
+  document.getElementById('c-gest').textContent=PP.filter(i=>i.estado==='En gestión').length;
+  document.getElementById('c-all').textContent=PP.length;
+  const alt=ac.filter(i=>i.urgencia==='Alta').length;
+  const ab=document.getElementById('alertEl');
+  if(alt>0){document.getElementById('alertTxt').textContent=Tenés ${alt} pendiente${alt>1?'s':''} de alta urgencia sin resolver;ab.classList.add('show');}
+  else ab.classList.remove('show');
+  const it=gfP();
+  document.getElementById('cntP').textContent=${it.length} resultado${it.length!==1?'s':''};
+  const tb=document.getElementById('tbP');
+  const em=document.getElementById('emP');
+  if(!it.length){tb.innerHTML='';em.style.display='block';return;}
+  em.style.display='none';
+  tb.innerHTML=it.map(x=>{
+    const di=x.estado==='Resuelto'?(x.fechaResolucion?Res. ${fd(x.fechaResolucion)}:'Res.'):(x.fechaEntrada?dd(x.fechaEntrada):'—');
+    const dc=typeof di==='number'?(di>=5?'ov':di>=3?'wa':'ok'):'';
+    const dl=typeof di==='number'?${di}d:di;
+    return`<tr class="${x.estado==='Resuelto'?'dim':''}">
+      <td class="mono" style="color:var(--text-light);font-size:11px">${x.id}</td>
+      <td><div style="font-weight:500">${x.owner||'—'}</div><div style="font-size:11px;color:var(--text-muted)">${x.unidad||''} ${x.edificio?'· '+x.edificio:''}</div><div style="font-size:10px;color:var(--text-light);margin-top:1px">${x.canal||''} · ${fd(x.fechaEntrada)}</div></td>
+      <td><span class="badge" style="background:var(--surface2);color:var(--text-muted)">${x.categoria||'—'}</span></td>
+      <td class="desc">${x.desc||'—'}</td>
+      <td><span class="badge b-${(x.urgencia||'baja').toLowerCase()}">${x.urgencia||'—'}</span></td>
+      <td><span class="badge ${x.estado==='En gestión'?'b-gest':x.estado==='Resuelto'?'b-res':'b-pend'}">${x.estado||'—'}</span></td>
+      <td class="mono ${dc}">${dl}</td>
+      <td><div class="acts"><button class="bsm" onclick="editP(${x.id})">Editar</button>${x.estado!=='Resuelto'?<button class="bsm res" onclick="openRes(${x.id})">Resolver</button>:''}</div></td>
+    </tr>`;
+  }).join('');
+}
+document.querySelectorAll('[data-fp]').forEach(c=>{c.addEventListener('click',()=>{document.querySelectorAll('#page-pendientes .card').forEach(x=>x.classList.remove('active'));c.classList.add('active');afP={t:c.dataset.fp,v:c.dataset.vp};rP();});});
+document.getElementById('sP').addEventListener('input',rP);
+document.getElementById('fCat').addEventListener('change',rP);
+document.getElementById('fEdif').addEventListener('change',rP);
+
+function openMP(id=null){
+  ePid=id;const x=id?PP.find(i=>i.id===id):null;
+  document.getElementById('mPT').textContent=id?'Editar pendiente':'Nuevo pendiente';
+  document.getElementById('mpO').value=x?.owner||'';document.getElementById('mpU').value=x?.unidad||'';
+  document.getElementById('mpE').value=x?.edificio||'';document.getElementById('mpC').value=x?.canal||'';
+  document.getElementById('mpK').value=x?.categoria||'';document.getElementById('mpQ').value=x?.urgencia||'';
+  document.getElementById('mpD').value=x?.desc||'';document.getElementById('mpS').value=x?.estado||'Pendiente';
+  document.getElementById('mpF').value=x?.fechaLimite||'';document.getElementById('mpR').value=x?.registro||'';
+  treg(document.getElementById('mpS').value);
+  document.getElementById('mP').classList.add('show');
+}
+function closeMP(){document.getElementById('mP').classList.remove('show');ePid=null;}
+function treg(v){document.getElementById('mpRG').style.display=v==='Resuelto'?'block':'none';}
+function saveP(){
+  const x={owner:document.getElementById('mpO').value.trim(),unidad:document.getElementById('mpU').value.trim(),edificio:document.getElementById('mpE').value,canal:document.getElementById('mpC').value,categoria:document.getElementById('mpK').value,urgencia:document.getElementById('mpQ').value,desc:document.getElementById('mpD').value.trim(),estado:document.getElementById('mpS').value,fechaLimite:document.getElementById('mpF').value,registro:document.getElementById('mpR').value.trim()};
+  if(!x.owner||!x.urgencia){alert('Completá al menos owner y urgencia.');return;}
+  if(ePid){const idx=PP.findIndex(i=>i.id===ePid);PP[idx]={...PP[idx],...x};if(x.estado==='Resuelto'&&!PP[idx].fechaResolucion)PP[idx].fechaResolucion=td();}
+  else PP.unshift({id:npi++,fechaEntrada:td(),fechaResolucion:x.estado==='Resuelto'?td():null,...x});
+  sv();closeMP();rP();
+}
+function editP(id){openMP(id);}
+function openRes(id){resId=id;document.getElementById('resR').value='';document.getElementById('mRes').classList.add('show');}
+function closeRes(){document.getElementById('mRes').classList.remove('show');resId=null;}
+function confRes(){
+  const r=document.getElementById('resR').value.trim();
+  if(!r){alert('Dejá un registro antes de resolver.');return;}
+  const idx=PP.findIndex(i=>i.id===resId);
+  PP[idx].estado='Resuelto';PP[idx].registro=r;PP[idx].fechaResolucion=td();
+  sv();closeRes();rP();renderUnits();
+}
+
+// ── COBROS/CRÉDITOS ──
+const ECATS=['After Departure Cleaning','HOA Balance Due','Owners Key/Fob Device','LockSmith Service','Linen + OSE Package','Amenities / Compras','Daños por huésped','Otra'];
+const CCATS=['Parking','Reserves Back','Otra'];
+
+function updCats(){
+  const t=document.getElementById('mgTipo').value;
+  const s=document.getElementById('mgCat');
+  const cats=t==='Expense'?ECATS:t==='Credit'?CCATS:[];
+  s.innerHTML=cats.length?cats.map(c=><option>${c}</option>):'<option value="">Seleccionar tipo primero</option>';
+  s.onchange=()=>{document.getElementById('otraG').style.display=s.value==='Otra'?'block':'none';};
+  document.getElementById('otraG').style.display='none';
+}
+function gfG(){
+  let it=[...GG];
+  const s=document.getElementById('sG').value.toLowerCase();
+  const m=document.getElementById('fMes').value;
+  const e=document.getElementById('fEdifG').value;
+  if(afG.t==='estado_pago'&&afG.v) it=it.filter(i=>i.estadoPago===afG.v);
+  else if(afG.t==='tipo'&&afG.v) it=it.filter(i=>i.tipo===afG.v);
+  if(s) it=it.filter(i=>(i.owner||'').toLowerCase().includes(s)||(i.unidad||'').toLowerCase().includes(s)||(i.desc||'').toLowerCase().includes(s)||(i.cat||'').toLowerCase().includes(s));
+  if(m) it=it.filter(i=>i.mes===m);
+  if(e) it=it.filter(i=>i.edificio===e);
+  return it;
+}
+function rG(){
+  document.getElementById('c-pte').textContent=GG.filter(i=>i.estadoPago==='Pendiente de cargar').length;
+  document.getElementById('c-carg').textContent=GG.filter(i=>i.estadoPago==='Cargado en AFR').length;
+  document.getElementById('c-ver').textContent=GG.filter(i=>i.estadoPago==='Verificado en statement').length;
+  document.getElementById('c-exp').textContent=GG.filter(i=>i.tipo==='Expense').length;
+  document.getElementById('c-cred').textContent=GG.filter(i=>i.tipo==='Credit').length;
+  document.getElementById('c-gall').textContent=GG.length;
+  const pte=GG.filter(i=>i.estadoPago==='Pendiente de cargar');
+  const sb=document.getElementById('sbanner');
+  const bt=document.getElementById('sbt');const bs=document.getElementById('sbs');
+  if(pte.length===0){bt.textContent='✓ Todo cargado en AFR';bs.textContent='Podés verificar los statements cuando lleguen los PDFs';sb.className='sbanner ok';}
+  else{const tot=pte.reduce((s,i)=>s+parseFloat(i.monto||0),0);bt.textContent=${pte.length} ítem${pte.length>1?'s':''} pendiente${pte.length>1?'s':''} de cargar en AFR;bs.textContent=Total: ${fv(tot)} — Recordá cargarlos antes de cerrar el mes;sb.className='sbanner warn';}
+  const meses=[...new Set(GG.map(i=>i.mes).filter(Boolean))].sort().reverse();
+  const fm2=document.getElementById('fMes');const cv=fm2.value;
+  fm2.innerHTML='<option value="">Todos los meses</option>'+meses.map(m=><option value="${m}" ${m===cv?'selected':''}>${fm(m)}</option>).join('');
+  const it=gfG();
+  document.getElementById('cntG').textContent=${it.length} resultado${it.length!==1?'s':''};
+  const tb=document.getElementById('tbG');const em=document.getElementById('emG');
+  if(!it.length){tb.innerHTML='';em.style.display='block';return;}
+  em.style.display='none';
+  tb.innerHTML=it.map(x=>{
+    const ec=x.estadoPago==='Verificado en statement'?'b-verif':x.estadoPago==='Cargado en AFR'?'b-carg':'b-ptecar';
+    const mc=x.tipo==='Expense'?'aneg':'apos';
+    const cl=x.cat==='Otra'&&x.otraCat?x.otraCat:(x.cat||'—');
+    return`<tr class="${x.estadoPago==='Verificado en statement'?'dim':''}">
+      <td class="mono" style="color:var(--text-light);font-size:11px">${x.id}</td>
+      <td><div style="font-weight:500">${x.owner||'—'}</div><div style="font-size:11px;color:var(--text-muted)">${x.unidad||''} ${x.edificio?'· '+x.edificio:''}</div></td>
+      <td><span class="badge ${x.tipo==='Expense'?'b-exp':'b-credit'}">${x.tipo||'—'}</span></td>
+      <td style="font-size:12px">${cl}</td>
+      <td class="desc">${x.desc||'—'}</td>
+      <td class="mono ${mc}">${x.tipo==='Expense'?'-':'+'} ${fv(x.monto)}</td>
+      <td style="font-size:12px;color:var(--text-muted)">${fm(x.mes)}</td>
+      <td><span class="badge ${ec}">${x.estadoPago||'—'}</span></td>
+      <td><div class="acts">
+        <button class="bsm" onclick="editG(${x.id})">Editar</button>
+        ${x.estadoPago==='Pendiente de cargar'?<button class="bsm res" onclick="advG(${x.id},'Cargado en AFR')">Cargado</button>:''}
+        ${x.estadoPago==='Cargado en AFR'?<button class="bsm res" onclick="advG(${x.id},'Verificado en statement')">Verificado</button>:''}
+      </div></td>
+    </tr>`;
+  }).join('');
+}
+function advG(id,s){const idx=GG.findIndex(i=>i.id===id);GG[idx].estadoPago=s;sv();rG();}
+function markAllCargado(){GG.filter(i=>i.estadoPago==='Pendiente de cargar').forEach(i=>i.estadoPago='Cargado en AFR');sv();rG();}
+document.querySelectorAll('[data-fg]').forEach(c=>{c.addEventListener('click',()=>{document.querySelectorAll('#page-pagos .card').forEach(x=>x.classList.remove('active'));c.classList.add('active');afG={t:c.dataset.fg,v:c.dataset.vg};rG();});});
+document.getElementById('sG').addEventListener('input',rG);
+document.getElementById('fMes').addEventListener('change',rG);
+document.getElementById('fEdifG').addEventListener('change',rG);
+
+function openMG(id=null){
+  eGid=id;const x=id?GG.find(i=>i.id===id):null;
+  document.getElementById('mGT').textContent=id?'Editar cobro/crédito':'Nuevo cobro / crédito';
+  document.getElementById('mgO').value=x?.owner||'';document.getElementById('mgU').value=x?.unidad||'';
+  document.getElementById('mgE').value=x?.edificio||'';document.getElementById('mgTipo').value=x?.tipo||'';
+  updCats();
+  if(x?.cat){document.getElementById('mgCat').value=x.cat;document.getElementById('otraG').style.display=x.cat==='Otra'?'block':'none';}
+  document.getElementById('mgOtra').value=x?.otraCat||'';
+  document.getElementById('mgM').value=x?.monto||'';document.getElementById('mgMes').value=x?.mes||'04-2026';
+  document.getElementById('mgD').value=x?.desc||'';document.getElementById('mgEst').value=x?.estadoPago||'Pendiente de cargar';
+  document.getElementById('mG').classList.add('show');
+}
+function closeMG(){document.getElementById('mG').classList.remove('show');eGid=null;}
+function saveG(){
+  const cat=document.getElementById('mgCat').value;
+  const x={owner:document.getElementById('mgO').value.trim(),unidad:document.getElementById('mgU').value.trim(),edificio:document.getElementById('mgE').value,tipo:document.getElementById('mgTipo').value,cat,otraCat:document.getElementById('mgOtra').value.trim(),monto:document.getElementById('mgM').value,mes:document.getElementById('mgMes').value,desc:document.getElementById('mgD').value.trim(),estadoPago:document.getElementById('mgEst').value};
+  if(!x.owner||!x.tipo||!x.monto){alert('Completá al menos owner, tipo y monto.');return;}
+  if(eGid){const idx=GG.findIndex(i=>i.id===eGid);GG[idx]={...GG[idx],...x};}
+  else GG.unshift({id:ngi++,fechaRegistro:td(),...x});
+  sv();closeMG();rG();
+}
+function editG(id){openMG(id);}
+
+// ── UNIDADES ──
+function getUnits(){
+  const m=new Map();
+  [...PP,...GG].forEach(x=>{if(!x.unidad)return;const k=${x.unidad}|${x.edificio||''};if(!m.has(k))m.set(k,{unidad:x.unidad,edificio:x.edificio||'',owner:x.owner||''));});
+  return[...m.values()];
+}
+function renderUnits(){
+  const s=document.getElementById('uSearch').value.toLowerCase();
+  const units=getUnits().filter(u=>u.unidad.toLowerCase().includes(s)||u.edificio.toLowerCase().includes(s)||u.owner.toLowerCase().includes(s));
+  const c=document.getElementById('uList');
+  if(!units.length){c.innerHTML='<div class="empty" style="grid-column:1/-1"><div class="empty-i">🏢</div><p>No hay unidades registradas aún</p></div>';return;}
+  c.innerHTML=units.map(u=>{
+    const pA=PP.filter(i=>i.unidad===u.unidad&&i.edificio===u.edificio&&i.estado!=='Resuelto');
+    const gP=GG.filter(i=>i.unidad===u.unidad&&i.edificio===u.edificio&&i.estadoPago==='Pendiente de cargar');
+    return`<div class="ucard" onclick="openUD('${u.unidad}','${u.edificio}')">
+      <div class="unum">Unidad ${u.unidad}</div>
+      <div class="ubuild">${u.edificio||'Sin edificio'}</div>
+      <div style="font-size:11px;color:var(--text-light);margin-top:2px">${u.owner}</div>
+      <div class="ubadges">
+        ${pA.length?<span class="badge b-pend">${pA.length} pend.</span>:''}
+        ${gP.length?<span class="badge b-ptecar">${gP.length} por cargar</span>:''}
+        ${!pA.length&&!gP.length?'<span class="badge b-baja">Sin activos</span>':''}
+      </div>
+    </div>`;
+  }).join('');
+}
+function openUD(u,e){
+  document.getElementById('uListView').style.display='none';
+  const det=document.getElementById('uDetail');det.classList.add('show');
+  const uP=PP.filter(i=>i.unidad===u&&i.edificio===e);
+  const uG=GG.filter(i=>i.unidad===u&&i.edificio===e);
+  const own=uP[0]?.owner||uG[0]?.owner||'';
+  document.getElementById('udT').textContent=Unidad ${u};
+  document.getElementById('udS').textContent=${e}${own?' · '+own:''};
+  document.getElementById('udPC').textContent=uP.filter(i=>i.estado!=='Resuelto').length;
+  document.getElementById('udGC').textContent=uG.length;
+  const pt=document.getElementById('udPT');
+  if(!uP.length) pt.innerHTML='<div class="empty" style="padding:20px"><p>Sin pendientes registrados</p></div>';
+  else pt.innerHTML=<table><thead><tr><th>Fecha</th><th>Categoría</th><th>Descripción</th><th>Urgencia</th><th>Estado</th></tr></thead><tbody>${uP.map(x=><tr class="${x.estado==='Resuelto'?'dim':''}"><td class="mono" style="font-size:11px">${fd(x.fechaEntrada)}</td><td><span class="badge" style="background:var(--surface2);color:var(--text-muted)">${x.categoria||'—'}</span></td><td class="desc">${x.desc||'—'}</td><td><span class="badge b-${(x.urgencia||'baja').toLowerCase()}">${x.urgencia||'—'}</span></td><td><span class="badge ${x.estado==='En gestión'?'b-gest':x.estado==='Resuelto'?'b-res':'b-pend'}">${x.estado}</span></td></tr>).join('')}</tbody></table>;
+  const gt=document.getElementById('udGT');
+  if(!uG.length) gt.innerHTML='<div class="empty" style="padding:20px"><p>Sin cobros o créditos registrados</p></div>';
+  else gt.innerHTML=<table><thead><tr><th>Fecha</th><th>Tipo</th><th>Categoría</th><th>Monto</th><th>Mes AFR</th><th>Estado</th></tr></thead><tbody>${uG.map(x=>{const ec=x.estadoPago==='Verificado en statement'?'b-verif':x.estadoPago==='Cargado en AFR'?'b-carg':'b-ptecar';const mc=x.tipo==='Expense'?'aneg':'apos';const cl=x.cat==='Otra'&&x.otraCat?x.otraCat:(x.cat||'—');return<tr class="${x.estadoPago==='Verificado en statement'?'dim':''}"><td class="mono" style="font-size:11px">${fd(x.fechaRegistro)}</td><td><span class="badge ${x.tipo==='Expense'?'b-exp':'b-credit'}">${x.tipo||'—'}</span></td><td style="font-size:12px">${cl}</td><td class="mono ${mc}">${x.tipo==='Expense'?'-':'+'} ${fv(x.monto)}</td><td style="font-size:12px;color:var(--text-muted)">${fm(x.mes)}</td><td><span class="badge ${ec}">${x.estadoPago||'—'}</span></td></tr>;}).join('')}</tbody></table>;
+}
+function closeUD(){document.getElementById('uDetail').classList.remove('show');document.getElementById('uListView').style.display='block';}
+
+// Close on bg
+['mP','mRes','mG'].forEach(id=>{document.getElementById(id).addEventListener('click',e=>{if(e.target===e.currentTarget)document.getElementById(id).classList.remove('show');});});
+
+// SEED
+if(PP.length===0){
+  PP=[{"id": 1, "fechaEntrada": "2026-04-14", "owner": "Juan Carlos Acosta Duarte", "unidad": "202", "edificio": "District 225", "canal": "WhatsApp", "categoria": "Administración", "desc": "LIVE - Pendiente: falta respuesta por parte de Nomada", "urgencia": "Alta", "estado": "Pendiente", "fechaLimite": "2026-04-16", "registro": "", "fechaResolucion": null}, {"id": 2, "fechaEntrada": "2026-04-14", "owner": "Daniel Hawie", "unidad": "504", "edificio": "District 225", "canal": "WhatsApp", "categoria": "Administración", "desc": "LIVE - Pendiente: falta respuesta por parte de Nomada", "urgencia": "Alta", "estado": "Pendiente", "fechaLimite": "2026-04-16", "registro": "", "fechaResolucion": null}, {"id": 3, "fechaEntrada": "2026-04-14", "owner": "Coco Qing Rivera", "unidad": "3703", "edificio": "District 225", "canal": "WhatsApp", "categoria": "Administración", "desc": "LIVE - Pendiente: falta respuesta por parte de Nomada", "urgencia": "Alta", "estado": "Pendiente", "fechaLimite": "2026-04-16", "registro": "", "fechaResolucion": null}, {"id": 4, "fechaEntrada": "2026-04-14", "owner": "Hugo Alberto Riveros", "unidad": "2412", "edificio": "District 225", "canal": "WhatsApp", "categoria": "Administración", "desc": "LIVE - Pendiente: falta respuesta por parte de Nomada", "urgencia": "Alta", "estado": "Pendiente", "fechaLimite": "2026-04-16", "registro": "", "fechaResolucion": null}, {"id": 5, "fechaEntrada": "2026-04-14", "owner": "Leonardo Sanchez", "unidad": "2605", "edificio": "District 225", "canal": "WhatsApp", "categoria": "Administración", "desc": "LIVE - Pendiente: falta respuesta por parte de Nomada", "urgencia": "Alta", "estado": "Pendiente", "fechaLimite": "2026-04-16", "registro": "", "fechaResolucion": null}, {"id": 6, "fechaEntrada": "2026-04-14", "owner": "Fabio Hernan Ruiz Llanos", "unidad": "1206", "edificio": "District 225", "canal": "WhatsApp", "categoria": "Administración", "desc": "LIVE - Pendiente: falta respuesta por parte de Nomada", "urgencia": "Alta", "estado": "Pendiente", "fechaLimite": "2026-04-16", "registro": "", "fechaResolucion": null}, {"id": 7, "fechaEntrada": "2026-04-14", "owner": "Maurizio Valle", "unidad": "1801", "edificio": "District 225", "canal": "WhatsApp", "categoria": "Administración", "desc": "LIVE - Pendiente: falta respuesta por parte de Nomada", "urgencia": "Alta", "estado": "Pendiente", "fechaLimite": "2026-04-16", "registro": "", "fechaResolucion": null}, {"id": 8, "fechaEntrada": "2026-04-14", "owner": "Maribel Acuña", "unidad": "3108", "edificio": "District 225", "canal": "WhatsApp", "categoria": "Administración", "desc": "LIVE - Pendiente: falta respuesta por parte de Nomada", "urgencia": "Alta", "estado": "Pendiente", "fechaLimite": "2026-04-16", "registro": "", "fechaResolucion": null}, {"id": 9, "fechaEntrada": "2026-04-14", "owner": "Moises R Mizrachi", "unidad": "1604", "edificio": "District 225", "canal": "WhatsApp", "categoria": "Punchlist", "desc": "LIVE - BLOQUEO: problema técnico o punchlist bloqueando calendario", "urgencia": "Alta", "estado": "En gestión", "fechaLimite": "2026-04-16", "registro": "", "fechaResolucion": null}, {"id": 10, "fechaEntrada": "2026-04-14", "owner": "Natalia Saldarriaga", "unidad": "1807", "edificio": "District 225", "canal": "WhatsApp", "categoria": "Punchlist", "desc": "LIVE - BLOQUEO: problema técnico o punchlist bloqueando calendario", "urgencia": "Alta", "estado": "En gestión", "fechaLimite": "2026-04-16", "registro": "", "fechaResolucion": null}, {"id": 11, "fechaEntrada": "2026-04-14", "owner": "Maksim Krykhtin", "unidad": "2207", "edificio": "District 225", "canal": "WhatsApp", "categoria": "Punchlist", "desc": "LIVE - BLOQUEO: problema técnico o punchlist bloqueando calendario", "urgencia": "Alta", "estado": "En gestión", "fechaLimite": "2026-04-16", "registro": "", "fechaResolucion": null}, {"id": 12, "fechaEntrada": "2026-04-14", "owner": "Wael Bazzi", "unidad": "1401", "edificio": "District 225", "canal": "WhatsApp", "categoria": "Punchlist", "desc": "LIVE - BLOQUEO: problema técnico o punchlist bloqueando calendario", "urgencia": "Alta", "estado": "En gestión", "fechaLimite": "2026-04-16", "registro": "", "fechaResolucion": null}, {"id": 13, "fechaEntrada": "2026-04-14", "owner": "Carlos Fernández Campos", "unidad": "408", "edificio": "District 225", "canal": "WhatsApp", "categoria": "Punchlist", "desc": "LIVE - BLOQUEO: problema técnico o punchlist bloqueando calendario", "urgencia": "Alta", "estado": "En gestión", "fechaLimite": "2026-04-16", "registro": "", "fechaResolucion": null}, {"id": 14, "fechaEntrada": "2026-04-14", "owner": "Alvaro Aparicio", "unidad": "204", "edificio": "District 225", "canal": "Mail", "categoria": "Administración", "desc": "Unidad registrada — sin pendientes activos al 14/04/2026", "urgencia": "Baja", "estado": "Resuelto", "fechaLimite": "", "registro": "Unidad LIVE sin pendientes. Cargada desde Trello el 14/04/2026.", "fechaResolucion": "2026-04-14"}, {"id": 15, "fechaEntrada": "2026-04-14", "owner": "Cesar Antonio Aguilar Zapata", "unidad": "310", "edificio": "District 225", "canal": "Mail", "categoria": "Administración", "desc": "Unidad registrada — sin pendientes activos al 14/04/2026", "urgencia": "Baja", "estado": "Resuelto", "fechaLimite": "", "registro": "Unidad LIVE sin pendientes. Cargada desde Trello el 14/04/2026.", "fechaResolucion": "2026-04-14"}, {"id": 16, "fechaEntrada": "2026-04-14", "owner": "Denise Vasquez", "unidad": "512", "edificio": "District 225", "canal": "Mail", "categoria": "Administración", "desc": "Unidad registrada — sin pendientes activos al 14/04/2026", "urgencia": "Baja", "estado": "Resuelto", "fechaLimite": "", "registro": "Unidad LIVE sin pendientes. Cargada desde Trello el 14/04/2026.", "fechaResolucion": "2026-04-14"}, {"id": 17, "fechaEntrada": "2026-04-14", "owner": "Carlos Perdomo", "unidad": "807", "edificio": "District 225", "canal": "Mail", "categoria": "Administración", "desc": "Unidad registrada — sin pendientes activos al 14/04/2026", "urgencia": "Baja", "estado": "Resuelto", "fechaLimite": "", "registro": "Unidad LIVE sin pendientes. Cargada desde Trello el 14/04/2026.", "fechaResolucion": "2026-04-14"}, {"id": 18, "fechaEntrada": "2026-04-14", "owner": "Cihat Burak Zorlu", "unidad": "809", "edificio": "District 225", "canal": "Mail", "categoria": "Administración", "desc": "Unidad registrada — sin pendientes activos al 14/04/2026", "urgencia": "Baja", "estado": "Resuelto", "fechaLimite": "", "registro": "Unidad LIVE sin pendientes. Cargada desde Trello el 14/04/2026.", "fechaResolucion": "2026-04-14"}, {"id": 19, "fechaEntrada": "2026-04-14", "owner": "Joaquin Acevedo Pons", "unidad": "810", "edificio": "District 225", "canal": "Mail", "categoria": "Administración", "desc": "Unidad registrada — sin pendientes activos al 14/04/2026", "urgencia": "Baja", "estado": "Resuelto", "fechaLimite": "", "registro": "Unidad LIVE sin pendientes. Cargada desde Trello el 14/04/2026.", "fechaResolucion": "2026-04-14"}, {"id": 20, "fechaEntrada": "2026-04-14", "owner": "Narasimha Raju", "unidad": "903", "edificio": "District 225", "canal": "Mail", "categoria": "Administración", "desc": "Unidad registrada — sin pendientes activos al 14/04/2026", "urgencia": "Baja", "estado": "Resuelto", "fechaLimite": "", "registro": "Unidad LIVE sin pendientes. Cargada desde Trello el 14/04/2026.", "fechaResolucion": "2026-04-14"}, {"id": 21, "fechaEntrada": "2026-04-14", "owner": "Sandra Ramirez", "unidad": "1104", "edificio": "District 225", "canal": "Mail", "categoria": "Administración", "desc": "Unidad registrada — sin pendientes activos al 14/04/2026", "urgencia": "Baja", "estado": "Resuelto", "fechaLimite": "", "registro": "Unidad LIVE sin pendientes. Cargada desde Trello el 14/04/2026.", "fechaResolucion": "2026-04-14"}, {"id": 22, "fechaEntrada": "2026-04-14", "owner": "Juan Felipe Isaza", "unidad": "1107", "edificio": "District 225", "canal": "Mail", "categoria": "Administración", "desc": "Unidad registrada — sin pendientes activos al 14/04/2026", "urgencia": "Baja", "estado": "Resuelto", "fechaLimite": "", "registro": "Unidad LIVE sin pendientes. Cargada desde Trello el 14/04/2026.", "fechaResolucion": "2026-04-14"}, {"id": 23, "fechaEntrada": "2026-04-14", "owner": "Navin Mirpuri", "unidad": "1203", "edificio": "District 225", "canal": "Mail", "categoria": "Administración", "desc": "Unidad registrada — sin pendientes activos al 14/04/2026", "urgencia": "Baja", "estado": "Resuelto", "fechaLimite": "", "registro": "Unidad LIVE sin pendientes. Cargada desde Trello el 14/04/2026.", "fechaResolucion": "2026-04-14"}, {"id": 24, "fechaEntrada": "2026-04-14", "owner": "Venkatesh Bhindwallam", "unidad": "1407", "edificio": "District 225", "canal": "Mail", "categoria": "Administración", "desc": "Unidad registrada — sin pendientes activos al 14/04/2026", "urgencia": "Baja", "estado": "Resuelto", "fechaLimite": "", "registro": "Unidad LIVE sin pendientes. Cargada desde Trello el 14/04/2026.", "fechaResolucion": "2026-04-14"}, {"id": 25, "fechaEntrada": "2026-04-14", "owner": "Juan Romero", "unidad": "1504", "edificio": "District 225", "canal": "Mail", "categoria": "Administración", "desc": "Unidad registrada — sin pendientes activos al 14/04/2026", "urgencia": "Baja", "estado": "Resuelto", "fechaLimite": "", "registro": "Unidad LIVE sin pendientes. Cargada desde Trello el 14/04/2026.", "fechaResolucion": "2026-04-14"}, {"id": 26, "fechaEntrada": "2026-04-14", "owner": "Alfonso Mondragon", "unidad": "1505", "edificio": "District 225", "canal": "Mail", "categoria": "Administración", "desc": "Unidad registrada — sin pendientes activos al 14/04/2026", "urgencia": "Baja", "estado": "Resuelto", "fechaLimite": "", "registro": "Unidad LIVE sin pendientes. Cargada desde Trello el 14/04/2026.", "fechaResolucion": "2026-04-14"}, {"id": 27, "fechaEntrada": "2026-04-14", "owner": "Cristian Pinochet", "unidad": "1601", "edificio": "District 225", "canal": "Mail", "categoria": "Administración", "desc": "Unidad registrada — sin pendientes activos al 14/04/2026", "urgencia": "Baja", "estado": "Resuelto", "fechaLimite": "", "registro": "Unidad LIVE sin pendientes. Cargada desde Trello el 14/04/2026.", "fechaResolucion": "2026-04-14"}, {"id": 28, "fechaEntrada": "2026-04-14", "owner": "Juan Velez Trujillo", "unidad": "1602", "edificio": "District 225", "canal": "Mail", "categoria": "Administración", "desc": "Unidad registrada — sin pendientes activos al 14/04/2026", "urgencia": "Baja", "estado": "Resuelto", "fechaLimite": "", "registro": "Unidad LIVE sin pendientes. Cargada desde Trello el 14/04/2026.", "fechaResolucion": "2026-04-14"}, {"id": 29, "fechaEntrada": "2026-04-14", "owner": "Alessandro Correra", "unidad": "1612", "edificio": "District 225", "canal": "Mail", "categoria": "Administración", "desc": "Unidad registrada — sin pendientes activos al 14/04/2026", "urgencia": "Baja", "estado": "Resuelto", "fechaLimite": "", "registro": "Unidad LIVE sin pendientes. Cargada desde Trello el 14/04/2026.", "fechaResolucion": "2026-04-14"}, {"id": 30, "fechaEntrada": "2026-04-14", "owner": "Carlos Alberto Montejo", "unidad": "1702", "edificio": "District 225", "canal": "Mail", "categoria": "Administración", "desc": "Unidad registrada — sin pendientes activos al 14/04/2026", "urgencia": "Baja", "estado": "Resuelto", "fechaLimite": "", "registro": "Unidad LIVE sin pendientes. Cargada desde Trello el 14/04/2026.", "fechaResolucion": "2026-04-14"}, {"id": 31, "fechaEntrada": "2026-04-14", "owner": "Mauricio Andrade", "unidad": "1712", "edificio": "District 225", "canal": "Mail", "categoria": "Administración", "desc": "Unidad registrada — sin pendientes activos al 14/04/2026", "urgencia": "Baja", "estado": "Resuelto", "fechaLimite": "", "registro": "Unidad LIVE sin pendientes. Cargada desde Trello el 14/04/2026.", "fechaResolucion": "2026-04-14"}, {"id": 32, "fechaEntrada": "2026-04-14", "owner": "Lian Ruiz", "unidad": "1901", "edificio": "District 225", "canal": "Mail", "categoria": "Administración", "desc": "Unidad registrada — sin pendientes activos al 14/04/2026", "urgencia": "Baja", "estado": "Resuelto", "fechaLimite": "", "registro": "Unidad LIVE sin pendientes. Cargada desde Trello el 14/04/2026.", "fechaResolucion": "2026-04-14"}, {"id": 33, "fechaEntrada": "2026-04-14", "owner": "Gladys Ariadna Mondragón", "unidad": "1904", "edificio": "District 225", "canal": "Mail", "categoria": "Administración", "desc": "Unidad registrada — sin pendientes activos al 14/04/2026", "urgencia": "Baja", "estado": "Resuelto", "fechaLimite": "", "registro": "Unidad LIVE sin pendientes. Cargada desde Trello el 14/04/2026.", "fechaResolucion": "2026-04-14"}, {"id": 34, "fechaEntrada": "2026-04-14", "owner": "Hari Nari", "unidad": "1908", "edificio": "District 225", "canal": "Mail", "categoria": "Administración", "desc": "Unidad registrada — sin pendientes activos al 14/04/2026", "urgencia": "Baja", "estado": "Resuelto", "fechaLimite": "", "registro": "Unidad LIVE sin pendientes. Cargada desde Trello el 14/04/2026.", "fechaResolucion": "2026-04-14"}, {"id": 35, "fechaEntrada": "2026-04-14", "owner": "Santiago Jaramillo", "unidad": "1909", "edificio": "District 225", "canal": "Mail", "categoria": "Administración", "desc": "Unidad registrada — sin pendientes activos al 14/04/2026", "urgencia": "Baja", "estado": "Resuelto", "fechaLimite": "", "registro": "Unidad LIVE sin pendientes. Cargada desde Trello el 14/04/2026.", "fechaResolucion": "2026-04-14"}, {"id": 36, "fechaEntrada": "2026-04-14", "owner": "Santiago Jaramillo", "unidad": "1912", "edificio": "District 225", "canal": "Mail", "categoria": "Administración", "desc": "Unidad registrada — sin pendientes activos al 14/04/2026", "urgencia": "Baja", "estado": "Resuelto", "fechaLimite": "", "registro": "Unidad LIVE sin pendientes. Cargada desde Trello el 14/04/2026.", "fechaResolucion": "2026-04-14"}, {"id": 37, "fechaEntrada": "2026-04-14", "owner": "Ana Maria Martinez", "unidad": "2007", "edificio": "District 225", "canal": "Mail", "categoria": "Administración", "desc": "Unidad registrada — sin pendientes activos al 14/04/2026", "urgencia": "Baja", "estado": "Resuelto", "fechaLimite": "", "registro": "Unidad LIVE sin pendientes. Cargada desde Trello el 14/04/2026.", "fechaResolucion": "2026-04-14"}, {"id": 38, "fechaEntrada": "2026-04-14", "owner": "Juan Miguel Guerreiro", "unidad": "2205", "edificio": "District 225", "canal": "Mail", "categoria": "Administración", "desc": "Unidad registrada — sin pendientes activos al 14/04/2026", "urgencia": "Baja", "estado": "Resuelto", "fechaLimite": "", "registro": "Unidad LIVE sin pendientes. Cargada desde Trello el 14/04/2026.", "fechaResolucion": "2026-04-14"}, {"id": 39, "fechaEntrada": "2026-04-14", "owner": "Marco A Ortega", "unidad": "2301", "edificio": "District 225", "canal": "Mail", "categoria": "Administración", "desc": "Unidad registrada — sin pendientes activos al 14/04/2026", "urgencia": "Baja", "estado": "Resuelto", "fechaLimite": "", "registro": "Unidad LIVE sin pendientes. Cargada desde Trello el 14/04/2026.", "fechaResolucion": "2026-04-14"}, {"id": 40, "fechaEntrada": "2026-04-14", "owner": "Isaac Christoph", "unidad": "2312", "edificio": "District 225", "canal": "Mail", "categoria": "Administración", "desc": "Unidad registrada — sin pendientes activos al 14/04/2026", "urgencia": "Baja", "estado": "Resuelto", "fechaLimite": "", "registro": "Unidad LIVE sin pendientes. Cargada desde Trello el 14/04/2026.", "fechaResolucion": "2026-04-14"}, {"id": 41, "fechaEntrada": "2026-04-14", "owner": "Rajat Rajpal", "unidad": "2512", "edificio": "District 225", "canal": "Mail", "categoria": "Administración", "desc": "Unidad registrada — sin pendientes activos al 14/04/2026", "urgencia": "Baja", "estado": "Resuelto", "fechaLimite": "", "registro": "Unidad LIVE sin pendientes. Cargada desde Trello el 14/04/2026.", "fechaResolucion": "2026-04-14"}, {"id": 42, "fechaEntrada": "2026-04-14", "owner": "Santiago Rodriguez", "unidad": "2712", "edificio": "District 225", "canal": "Mail", "categoria": "Administración", "desc": "Unidad registrada — sin pendientes activos al 14/04/2026", "urgencia": "Baja", "estado": "Resuelto", "fechaLimite": "", "registro": "Unidad LIVE sin pendientes. Cargada desde Trello el 14/04/2026.", "fechaResolucion": "2026-04-14"}, {"id": 43, "fechaEntrada": "2026-04-14", "owner": "Jaime Ortiz", "unidad": "2805", "edificio": "District 225", "canal": "Mail", "categoria": "Administración", "desc": "Unidad registrada — sin pendientes activos al 14/04/2026", "urgencia": "Baja", "estado": "Resuelto", "fechaLimite": "", "registro": "Unidad LIVE sin pendientes. Cargada desde Trello el 14/04/2026.", "fechaResolucion": "2026-04-14"}, {"id": 44, "fechaEntrada": "2026-04-14", "owner": "Carlos Andrade", "unidad": "2806", "edificio": "District 225", "canal": "Mail", "categoria": "Administración", "desc": "Unidad registrada — sin pendientes activos al 14/04/2026", "urgencia": "Baja", "estado": "Resuelto", "fechaLimite": "", "registro": "Unidad LIVE sin pendientes. Cargada desde Trello el 14/04/2026.", "fechaResolucion": "2026-04-14"}, {"id": 45, "fechaEntrada": "2026-04-14", "owner": "Marcos Kishinevsky", "unidad": "2810", "edificio": "District 225", "canal": "Mail", "categoria": "Administración", "desc": "Unidad registrada — sin pendientes activos al 14/04/2026", "urgencia": "Baja", "estado": "Resuelto", "fechaLimite": "", "registro": "Unidad LIVE sin pendientes. Cargada desde Trello el 14/04/2026.", "fechaResolucion": "2026-04-14"}, {"id": 46, "fechaEntrada": "2026-04-14", "owner": "Jean Pierre Beltran", "unidad": "2902", "edificio": "District 225", "canal": "Mail", "categoria": "Administración", "desc": "Unidad registrada — sin pendientes activos al 14/04/2026", "urgencia": "Baja", "estado": "Resuelto", "fechaLimite": "", "registro": "Unidad LIVE sin pendientes. Cargada desde Trello el 14/04/2026.", "fechaResolucion": "2026-04-14"}, {"id": 47, "fechaEntrada": "2026-04-14", "owner": "Kye Hodge", "unidad": "2904", "edificio": "District 225", "canal": "Mail", "categoria": "Administración", "desc": "Unidad registrada — sin pendientes activos al 14/04/2026", "urgencia": "Baja", "estado": "Resuelto", "fechaLimite": "", "registro": "Unidad LIVE sin pendientes. Cargada desde Trello el 14/04/2026.", "fechaResolucion": "2026-04-14"}, {"id": 48, "fechaEntrada": "2026-04-14", "owner": "Mario Salinas", "unidad": "2912", "edificio": "District 225", "canal": "Mail", "categoria": "Administración", "desc": "Unidad registrada — sin pendientes activos al 14/04/2026", "urgencia": "Baja", "estado": "Resuelto", "fechaLimite": "", "registro": "Unidad LIVE sin pendientes. Cargada desde Trello el 14/04/2026.", "fechaResolucion": "2026-04-14"}, {"id": 49, "fechaEntrada": "2026-04-14", "owner": "Paul Can Basuglu", "unidad": "3101", "edificio": "District 225", "canal": "Mail", "categoria": "Administración", "desc": "Unidad registrada — sin pendientes activos al 14/04/2026", "urgencia": "Baja", "estado": "Resuelto", "fechaLimite": "", "registro": "Unidad LIVE sin pendientes. Cargada desde Trello el 14/04/2026.", "fechaResolucion": "2026-04-14"}, {"id": 50, "fechaEntrada": "2026-04-14", "owner": "Stephanie Lichtenstein", "unidad": "3203", "edificio": "District 225", "canal": "Mail", "categoria": "Administración", "desc": "Unidad registrada — sin pendientes activos al 14/04/2026", "urgencia": "Baja", "estado": "Resuelto", "fechaLimite": "", "registro": "Unidad LIVE sin pendientes. Cargada desde Trello el 14/04/2026.", "fechaResolucion": "2026-04-14"}, {"id": 51, "fechaEntrada": "2026-04-14", "owner": "Terrance Harris", "unidad": "3206", "edificio": "District 225", "canal": "Mail", "categoria": "Administración", "desc": "Unidad registrada — sin pendientes activos al 14/04/2026", "urgencia": "Baja", "estado": "Resuelto", "fechaLimite": "", "registro": "Unidad LIVE sin pendientes. Cargada desde Trello el 14/04/2026.", "fechaResolucion": "2026-04-14"}, {"id": 52, "fechaEntrada": "2026-04-14", "owner": "Elisa de Valiente", "unidad": "3212", "edificio": "District 225", "canal": "Mail", "categoria": "Administración", "desc": "Unidad registrada — sin pendientes activos al 14/04/2026", "urgencia": "Baja", "estado": "Resuelto", "fechaLimite": "", "registro": "Unidad LIVE sin pendientes. Cargada desde Trello el 14/04/2026.", "fechaResolucion": "2026-04-14"}, {"id": 53, "fechaEntrada": "2026-04-14", "owner": "Pavel Krykhtin", "unidad": "3402", "edificio": "District 225", "canal": "Mail", "categoria": "Administración", "desc": "Unidad registrada — sin pendientes activos al 14/04/2026", "urgencia": "Baja", "estado": "Resuelto", "fechaLimite": "", "registro": "Unidad LIVE sin pendientes. Cargada desde Trello el 14/04/2026.", "fechaResolucion": "2026-04-14"}, {"id": 54, "fechaEntrada": "2026-04-14", "owner": "Corydon Cook", "unidad": "3505", "edificio": "District 225", "canal": "Mail", "categoria": "Administración", "desc": "Unidad registrada — sin pendientes activos al 14/04/2026", "urgencia": "Baja", "estado": "Resuelto", "fechaLimite": "", "registro": "Unidad LIVE sin pendientes. Cargada desde Trello el 14/04/2026.", "fechaResolucion": "2026-04-14"}, {"id": 55, "fechaEntrada": "2026-04-14", "owner": "Luis Eloy Arismendi", "unidad": "3601", "edificio": "District 225", "canal": "Mail", "categoria": "Administración", "desc": "Unidad registrada — sin pendientes activos al 14/04/2026", "urgencia": "Baja", "estado": "Resuelto", "fechaLimite": "", "registro": "Unidad LIVE sin pendientes. Cargada desde Trello el 14/04/2026.", "fechaResolucion": "2026-04-14"}];
+  npi=56;
+} if(false && PP.length===0){
+  PP=[
+    {id:npi++,fechaEntrada:'2026-04-10',owner:'Juan Perez',unidad:'204',edificio:'District 225',canal:'WhatsApp',categoria:'Ingresos',desc:'Pregunta por qué su pago de marzo fue menor al mes anterior',urgencia:'Alta',estado:'Pendiente',fechaLimite:'2026-04-12',registro:'',fechaResolucion:null},
+    {id:npi++,fechaEntrada:'2026-04-11',owner:'Maria Rodriguez',unidad:'310',edificio:'District 225',canal:'Mail',categoria:'Bookings',desc:'Consulta por qué tiene días bloqueados en abril',urgencia:'Media',estado:'En gestión',fechaLimite:'2026-04-14',registro:'Se revisó con revenue.',fechaResolucion:null},
+    {id:npi++,fechaEntrada:'2026-04-12',owner:'Carlos López',unidad:'813',edificio:'Crosby',canal:'Mail',categoria:'Punchlist',desc:'Lavadora sin funcionar desde hace 2 semanas',urgencia:'Alta',estado:'Pendiente',fechaLimite:'2026-04-13',registro:'',fechaResolucion:null},
+    {id:npi++,fechaEntrada:'2026-04-05',owner:'Roberto Silva',unidad:'1201',edificio:'District 225',canal:'Mail',categoria:'Administración',desc:'Pregunta sobre HOA de marzo',urgencia:'Baja',estado:'Resuelto',fechaLimite:'',registro:'Pago procesado el 3/4. Se le envió comprobante.',fechaResolucion:'2026-04-07'},
+  ];
+}
+if(GG.length===0){
+  GG=[
+    {id:ngi++,fechaRegistro:'2026-04-08',owner:'Ana Gonzalez',unidad:'502',edificio:'District 225',tipo:'Credit',cat:'Parking',otraCat:'',monto:'115',mes:'04-2026',desc:'Parking cobrado en marzo',estadoPago:'Pendiente de cargar'},
+    {id:ngi++,fechaRegistro:'2026-04-10',owner:'Juan Perez',unidad:'204',edificio:'District 225',tipo:'Expense',cat:'After Departure Cleaning',otraCat:'',monto:'150',mes:'04-2026',desc:'Limpieza post-estadía 8 abril',estadoPago:'Pendiente de cargar'},
+    {id:ngi++,fechaRegistro:'2026-03-28',owner:'Maria Rodriguez',unidad:'310',edificio:'District 225',tipo:'Credit',cat:'Parking',otraCat:'',monto:'90',mes:'03-2026',desc:'Parking marzo',estadoPago:'Verificado en statement'},
+  ];
+}
+sv();
+
+document.getElementById('hdate').textContent=new Date().toLocaleDateString('es-ES',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+rP();
+</script>
+</body>
+</html>
